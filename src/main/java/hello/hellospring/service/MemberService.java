@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 public class MemberService {
 
     private final MemberRepository memberRepository;
 
     // 생성자에서 MemberRepository를 DI(의존성 주입)
+
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
