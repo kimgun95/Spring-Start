@@ -22,25 +22,28 @@ class MemoryMemberRepositoryTest {
         Member member = new Member();
         member.setName("gun");
 
-        repository.save(member);
+        repository.save(member); //member의 주소
+        Long id = member.getId(); //1L
+        Member result = repository.findById(id).get(); //member의 주소 받아옴
 
-        Member result = repository.findById(member.getId()).get();
-        assertThat(result).isEqualTo(member);
+        assertThat(result).isEqualTo(member); //이게 같을까? 같으면 test 통과
     }
 
     @Test
     public void findByName() {
-        Member m1 = new Member();
-        m1.setName("kim");
-        repository.save(m1);
+        Member 짱구 = new Member();
+        짱구.setName("짱구");
+        repository.save(짱구);
 
-        Member m2 = new Member();
-        m2.setName("lee");
-        repository.save(m2);
+        Member 유리 = new Member();
+        유리.setName("유리");
+        repository.save(유리);
 
-        Member result = repository.findByName("lee").get();
+        짱구.getId(); //1L
+        유리.getId(); //2L
+        Member result = repository.findByName("유리").get(); //유리
 
-        assertThat(result).isEqualTo(m2);
+        assertThat(result).isEqualTo(유리);
     }
 
     @Test
