@@ -48,8 +48,12 @@ public class JpaMemberRepositoryTest {
         memberRepository.save(member2);
         System.out.println("----------------------");
         memberRepository.bulkUpdateMember();
+        memberRepository.flush();
 
-        assertThat(member1.getActive()).isEqualTo(memberRepository.findById(member1.getId()).get().getActive());
+        // bulk update는 쿼리를 db에 바로 전달하기 때문에 영속성 컨텍스트의 값이랑 db의 값은 다르게 유지된다
+        // 그래서 Modifying 어노테이션으로 영속성 컨텍스트를 비워 다시 db를 조회함으로써 값을 업데이트 해야한다
+        Member refreshMember1 = memberRepository.findById(member1.getId()).get();
+        assertThat(member1.getActive()).isNotEqualTo(refreshMember1.getActive());
     }
 
     @Test

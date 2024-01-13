@@ -19,7 +19,7 @@ class TestRepositoryTest {
     member.setName("영은");
 
     repositoryA.save(member);
-    Member result = repositoryA.findByName("유리").get();
+    Member result = repositoryA.findByName(member.getName()).get();
 
     assertThat(result).isEqualTo(member);
   }
