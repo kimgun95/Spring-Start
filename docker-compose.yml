@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db: # db 서비스
+    container_name: h2 # 컨테이너 이름
+    image: oscarfonts/h2:latest # h2 이미지
+    ports: # 포트포워딩
+      - 1521:1521 # TCP 포트 : 데이터베이스 연결 포트
+      - 8081:81 # HTTP 포트 : 웹콘솔 연결 포트
+    environment: #h2 설정
+      H2_OPTIONS: -ifNotExists # DB가 존재하지 않을 때 생성
+    volumes:
+      - ./h2/:/opt/h2-data # host 서버와 연결되는 통로 ( 저장 및 백업 경로 )
+  app:
+    container_name: app # 컨테이너 이름
+    build:
+      context: . # Dockerfile 위치
+      dockerfile: Dockerfile # Docker 파일 이름
+    ports: # 포트포워딩
+      - 80:8080 # HTTP 포트 연결
+    environment: # spring app 설정
+      SPRING_DATASOURCE_URL: jdbc:h2:tcp://h2:1521/demo # h2 db url
+      SPRING_DATASOURCE_USERNAME: sa # h2 db id
+      SPRING_DATASOURCE_PASSWORD: # h2 db password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create # DDL 자동 생성
+    depends_on: # app 서비스 시작 전 실행되어야 하는 서비스
+      - db
+    restart: always # depends on은 실행 순서만 컨트롤 할뿐,
+    # 컨테이너 안의 서비스가 실행가능한 상태인지까지는 확인 하지 않기 때문에
+    # DB 또는 Redis가 아직 실행가능한 상태가 아니여서 실패하는 경우 재시작 하도록 설정
