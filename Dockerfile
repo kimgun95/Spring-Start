@@ -1,5 +1,5 @@
 ##### Build Stage #####
-# 종속성 추출
+
 # 빌드 작업을 위한 JDK 베이스이미지
 FROM openjdk:8-jdk-alpine as build
 
